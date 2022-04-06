@@ -1,0 +1,29 @@
+<script src="./physics.js"></script>
+<script src="./script.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<div class="main">
+    <div class="control">
+        <button id="up">up</button>
+        <button id="down">down</button>
+        <button id="left">left</button>
+        <button id="right">right</button>
+        <input id="x_slider" type="range" value="0" min="-10" max="10">
+        <input id="y_slider" type="range" value="1" min="-10" max="10">
+    </div>
+    <div class="dashboard">
+        <p>acceleration: <span id="acc_value">0</span></p> 
+        <p>velocity: <span id="vel_value">0</span></p>
+        <p>position: <span id="pos_value">0</span></p>
+        <p>FPS: <span id="fps">0</span></p>
+    </div>
+    <div class="canvas">
+        <div id="game" class="game">
+            <img src="rocket_ship.png" width="500" height="600">
+        </div>
+        <div class="meteor" id="meteor">
+        </div>
+    </div>
+    
+    </div>
+</div>

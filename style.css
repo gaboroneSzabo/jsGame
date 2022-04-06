@@ -1,0 +1,24 @@
+.game {
+    position: fixed;
+    bottom: 0;
+    right: 0px;
+    border: 3px solid #73AD21;
+
+}
+
+.meteor {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+}
+
+.canvas {
+    top: 100;
+    position: relative;
+    border: 3px solid #73AD21;
+    width: 800;
+    height: 600;
+}
