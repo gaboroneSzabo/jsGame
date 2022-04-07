@@ -1,49 +1,39 @@
-//import Physics from './physics'
-
 async function init() {
-
-    const xSlider = document.getElementById("x_slider")
-    const ySlider = document.getElementById("y_slider")
 
     const accValue = document.getElementById("acc_value")
     const velValue = document.getElementById("vel_value")
     const posValue = document.getElementById("pos_value")
     const fps = document.getElementById("fps")
 
-    const rocketShip = document.getElementById("game")
-    const meteor = document.getElementById("meteor")
 
-
-    const upButton = document.getElementById("up")
-    const downButton = document.getElementById("down")
-    const leftButton = document.getElementById("left")
-    const rightButton = document.getElementById("right")
-
+    const bullet = new Bullet({x:5, y:5})
+    const meteorObject = new Meteor({x:80, y:50})
     async function main() {
-        upButton.onclick = (e) => { move(rocketShip, 'up') }
-        downButton.onclick = (e) => { move(rocketShip, 'down') }
-        leftButton.onclick = (e) => { move(rocketShip, 'left') }
-        rightButton.onclick = (e) => { move(rocketShip, 'right') }
+
+        
+        const meteorContainer = []
+        for (i=0; i < 1000; i++) {
+            meteorContainer.push(new Meteor({x: 10, y: 10}))
+        }
+
     
-        document.addEventListener('keypress', (e) => keyPress(e, rocketShip))
-
-        const position = { x: 10, y: 10 }
-
-        const game = new Physics(position)
-
+        document.addEventListener('keydown', (e) => keyPress(e, meteorObject))
+       
         let counter = 0
 
         while (true) {
             let initDate = new Date().getTime()
-            moveTo(meteor, game.position)
-            game.simulate()
-            game.force.x = xSlider.value * 10
-            game.force.y = ySlider.value * 10
+
             await sleep(10)
             let endDate = new Date().getTime()
-            game.tickrate = calculateTickRate(initDate, endDate)
-            if (calculateFps(initDate, endDate) / counter > 10) {
-                updateDashboard(game.acceleration, game.velocity, game.position)
+            let tickrate = calculateTickRate(initDate, endDate)
+
+            meteorContainer.forEach(meteor => meteor.render(tickrate))
+
+            meteorObject.render(tickrate)
+    
+            if (counter > 10) {
+                updateDashboard(meteorObject.physics.acceleration, meteorObject.physics.velocity, meteorObject.physics.position)
                 fps.innerHTML = Math.round(calculateFps(initDate, endDate) * 10) / 10
                 counter = 0
             }
@@ -71,75 +61,9 @@ async function init() {
     }
 
     function keyPress(e, element) {
-        switch (e.code) {
-            case 'KeyW':
-                move(element, 'up')
-                break
-            case 'KeyS':
-                move(element, 'down')
-                break
-            case 'KeyA':
-                move(element, 'left')
-                break
-            case 'KeyD':
-                move(element, 'right')
-                break
-            case 'Space':
-                break
-        }
+        element.move({direction: e.code, strength: 20})
     }
 
-    function moveTo(element, position) {
-        element.style.top = position.y
-        element.style.left = position.x
-    }
-
-    function move(element, direction) {
-        console.log(element)
-        switch (direction) {
-            case 'up':
-                element.style.bottom = extractPosition(element.style.bottom, '+')
-                break
-            case 'down':
-                element.style.bottom = extractPosition(element.style.bottom, '-')
-                break
-            case 'left':
-                element.style.right = extractPosition(element.style.right, '+')
-                break
-            case 'right':
-                element.style.right = extractPosition(element.style.right, '-')
-                break
-        }
-
-    }
-
-    function extractRawPosition(rawPosition) {
-        let position = rawPosition
-        if (position == '') {
-            position = 0
-        }
-        else {
-            position = parseInt(rawPosition.slice(0, -2))
-        }
-        return position
-    }
-
-    function extractPosition(rawPosition, prefix) {
-        const increment = 50
-        let position = rawPosition
-        if (position == '') {
-            position = '0px'
-        }
-        else {
-            if (prefix == '+') {
-                position = parseInt(rawPosition.slice(0, -2)) + increment
-            } else if (prefix == '-') {
-                position = parseInt(rawPosition.slice(0, -2)) - increment
-            }
-
-        }
-        return position
-    }
     main()
 }
 

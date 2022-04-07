@@ -7,12 +7,30 @@
 }
 
 .meteor {
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100px;
     height: 100px;
     background-color: blue;
+}
+
+.bullet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
+.spaceShip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: green;
 }
 
 .canvas {
