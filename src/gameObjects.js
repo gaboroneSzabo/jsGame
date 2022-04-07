@@ -42,23 +42,24 @@ class GameObject {
                 break
         }
     }
-
 }
 
 class Meteor extends GameObject {
+    
     constructor(size) {
         super(size, "meteor")
         this.physics.velocity.x = (Math.random() - 0.5) * 10
         this.physics.velocity.y = (Math.random() - 0.5) * 10
       }
-    
 }
 
 class SpaceShip extends GameObject {
+
     constructor(size) {
         super(size, "spaceShip")
         this.physics.force.y = 0
         this.bullets = []
+        this.switch = false
       }
 
       render = (tickrate) => {
@@ -67,7 +68,6 @@ class SpaceShip extends GameObject {
         this.element.style.top = this.physics.position.y
         this.element.style.left = this.physics.position.x
         this.bullets.forEach(bullet => bullet.render(tickrate))
-        //this.bullet.render(tickrate)
       }
 
       move = (command) => {
@@ -101,6 +101,7 @@ class SpaceShip extends GameObject {
 
 
 class Bullet extends GameObject {
+    
     constructor(size) {
         super(size, "bullet")
       }

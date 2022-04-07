@@ -6,21 +6,16 @@ async function init() {
     const fps = document.getElementById("fps")
 
 
-    //const bullet = new Bullet({x:5, y:5})
     const spaceShip = new SpaceShip({x:50, y:80})
     async function main() {
-
+        document.addEventListener('keydown', (e) => keyPress(e, spaceShip))
         
         const objectContainer = []
         for (i=0; i < 1000; i++) {
             objectContainer.push(new Meteor({x: 10, y: 10}))
         }
         objectContainer.push(spaceShip)
-        //objectContainer.push(bullet)
-
-    
-        document.addEventListener('keydown', (e) => keyPress(e, spaceShip))
-       
+     
         let counter = 0
 
         while (true) {
