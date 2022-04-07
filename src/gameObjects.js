@@ -19,7 +19,7 @@ class GameObject {
         document.getElementById("canvas").appendChild(this.element)
     }
 
-    render = (tickrate) => {
+    render = function (tickrate) {
         this.physics.tickrate = tickrate
         this.physics.simulate()
         this.element.style.top = this.physics.position.y
@@ -57,9 +57,8 @@ class Meteor extends GameObject {
 class SpaceShip extends GameObject {
     constructor(size) {
         super(size, "spaceShip")
-        this.bullet = new Bullet({x: 10, y:10})
-        this.bullet.physics.velocity.y = 10
         this.physics.force.y = 0
+        this.bullets = []
       }
 
       render = (tickrate) => {
@@ -67,7 +66,8 @@ class SpaceShip extends GameObject {
         this.physics.simulate()
         this.element.style.top = this.physics.position.y
         this.element.style.left = this.physics.position.x
-        this.bullet.render(tickrate)
+        this.bullets.forEach(bullet => bullet.render(tickrate))
+        //this.bullet.render(tickrate)
       }
 
       move = (command) => {
@@ -85,11 +85,17 @@ class SpaceShip extends GameObject {
                 this.physics.velocity.x += command.strength
                 break
             case 'Space' :
-                this.bullet.physics.position.x = this.physics.position.x
-                this.bullet.physics.position.y = this.physics.position.y
-                this.bullet.physics.velocity.y = -100
+                this.spawnBullet()
                 break
         }
+    }
+
+    spawnBullet = () => {
+        const bullet = new Bullet({x: 10, y:10})
+        this.bullets.push(bullet)
+        bullet.physics.position.x = this.physics.position.x
+        bullet.physics.position.y = this.physics.position.y
+        bullet.physics.velocity.y = -100
     }
 }
 
@@ -98,13 +104,4 @@ class Bullet extends GameObject {
     constructor(size) {
         super(size, "bullet")
       }
-
-      render = (tickrate) => {
-        this.physics.tickrate = tickrate
-        this.physics.simulate()
-        this.element.style.top = this.physics.position.y
-        this.element.style.left = this.physics.position.x
-    }
-    
-      
 }
