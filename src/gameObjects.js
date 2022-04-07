@@ -57,7 +57,40 @@ class Meteor extends GameObject {
 class SpaceShip extends GameObject {
     constructor(size) {
         super(size, "spaceShip")
+        this.bullet = new Bullet({x: 10, y:10})
+        this.bullet.physics.velocity.y = 10
+        this.physics.force.y = 0
       }
+
+      render = (tickrate) => {
+        this.physics.tickrate = tickrate
+        this.physics.simulate()
+        this.element.style.top = this.physics.position.y
+        this.element.style.left = this.physics.position.x
+        this.bullet.render(tickrate)
+      }
+
+      move = (command) => {
+        switch (command.direction) {
+            case 'KeyW' :
+                this.physics.velocity.y -= command.strength
+                break
+            case 'KeyS' :
+                this.physics.velocity.y += command.strength
+                break
+            case 'KeyA' :
+                this.physics.velocity.x -= command.strength
+                break
+            case 'KeyD' :
+                this.physics.velocity.x += command.strength
+                break
+            case 'Space' :
+                this.bullet.physics.position.x = this.physics.position.x
+                this.bullet.physics.position.y = this.physics.position.y
+                this.bullet.physics.velocity.y = -100
+                break
+        }
+    }
 }
 
 
@@ -65,12 +98,13 @@ class Bullet extends GameObject {
     constructor(size) {
         super(size, "bullet")
       }
-    
-      move = (command) => {
-        switch (command.direction) {
-            case 'Space' :
-                this.physics.velocity.y -= 100
-                break
-        }
+
+      render = (tickrate) => {
+        this.physics.tickrate = tickrate
+        this.physics.simulate()
+        this.element.style.top = this.physics.position.y
+        this.element.style.left = this.physics.position.x
     }
+    
+      
 }

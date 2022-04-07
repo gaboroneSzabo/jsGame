@@ -6,18 +6,20 @@ async function init() {
     const fps = document.getElementById("fps")
 
 
-    const bullet = new Bullet({x:5, y:5})
-    const meteorObject = new Meteor({x:80, y:50})
+    //const bullet = new Bullet({x:5, y:5})
+    const spaceShip = new SpaceShip({x:50, y:80})
     async function main() {
 
         
-        const meteorContainer = []
+        const objectContainer = []
         for (i=0; i < 1000; i++) {
-            meteorContainer.push(new Meteor({x: 10, y: 10}))
+            objectContainer.push(new Meteor({x: 10, y: 10}))
         }
+        objectContainer.push(spaceShip)
+        //objectContainer.push(bullet)
 
     
-        document.addEventListener('keydown', (e) => keyPress(e, meteorObject))
+        document.addEventListener('keydown', (e) => keyPress(e, spaceShip))
        
         let counter = 0
 
@@ -28,12 +30,12 @@ async function init() {
             let endDate = new Date().getTime()
             let tickrate = calculateTickRate(initDate, endDate)
 
-            meteorContainer.forEach(meteor => meteor.render(tickrate))
+            objectContainer.forEach(meteor => meteor.render(tickrate))
 
-            meteorObject.render(tickrate)
+            spaceShip.render(tickrate)
     
             if (counter > 10) {
-                updateDashboard(meteorObject.physics.acceleration, meteorObject.physics.velocity, meteorObject.physics.position)
+                updateDashboard(spaceShip.physics.acceleration, spaceShip.physics.velocity, spaceShip.physics.position)
                 fps.innerHTML = Math.round(calculateFps(initDate, endDate) * 10) / 10
                 counter = 0
             }
